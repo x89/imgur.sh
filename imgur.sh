@@ -58,7 +58,7 @@ elif [ ! -f "$1" ]; then
 fi
 
 # check curl is available
-which curl >/dev/null 2>/dev/null || {
+type curl >/dev/null 2>/dev/null || {
 	echo "Couln't find curl, which is required." >&2
 	exit 17
 }
@@ -85,8 +85,8 @@ echo "Delete page: $deleteurl" >&2
 
 # put the URL on the clipboard if we have xsel or xclip
 if [ $DISPLAY ]; then
-	{ which xsel >/dev/null 2>/dev/null && echo -n $url | xsel; } \
-		|| { which xclip >/dev/null 2>/dev/null && echo -n $url | xclip; } \
+	{ type xsel >/dev/null 2>/dev/null && echo -n $url | xsel; } \
+		|| { type xclip >/dev/null 2>/dev/null && echo -n $url | xclip; } \
 		|| echo "Haven't copied to the clipboard: no xsel or xclip" >&2
 else
 	echo "Haven't copied to the clipboard: no \$DISPLAY" >&2
