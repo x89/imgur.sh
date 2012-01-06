@@ -19,7 +19,7 @@
 # Upload an image:
 # 	imgur images/hilarious/manfallingover.jpg
 # The URL will be displayed (and the delete page's URL will be displayed on 
-# stdout). If you have xsel or xclip the URL will also be put on the X 
+# stderr). If you have xsel or xclip the URL will also be put on the X 
 # selection, which you can usually paste with a middle click.
 
 # Put your API key in the variable below.
