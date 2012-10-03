@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # imgur script by Bart Nagel <bart@tremby.net>
-# version 4
+# improvements by Tino Sino <robottinosino@gmail.com>
+# version 5
 # I release this into the public domain. Do with it what you will.
 
 # Required: curl
@@ -38,24 +39,24 @@ function usage {
 }
 
 # check API key has been entered
-if [ "$apikey" = "Your API key" ]; then
+if [ -z "$apikey" ]; then
 	echo "You first need to edit the script and put your API key in the variable near the top." >&2
 	exit 15
 fi
 
 # check arguments
-if [ "$1" = "-h" -o "$1" = "--help" ]; then
+if [ "$1" == "-h" -o "$1" == "--help" ]; then
 	usage
 	exit 0
-elif [ $# == 0 ]; then
+elif [ $# -eq 0 ]; then
 	echo "No file specified" >&2
 	usage
 	exit 16
 fi
 
 # check curl is available
-type curl >/dev/null 2>/dev/null || {
-	echo "Couln't find curl, which is required." >&2
+type curl &>/dev/null || {
+	echo "Couldn't find curl, which is required." >&2
 	exit 17
 }
 
@@ -75,7 +76,7 @@ while [ $# -gt 0 ]; do
 	fi
 
 	# upload the image
-	response=$(curl -F "key=$apikey" -H "Expect: " -F "image=@$file" \
+	response=$(curl -vF "key=$apikey" -H "Expect: " -F "image=@$file" \
 		http://imgur.com/api/upload.xml 2>/dev/null)
 	# the "Expect: " header is to get around a problem when using this through 
 	# the Squid proxy. Not sure if it's a Squid bug or what.
@@ -83,29 +84,38 @@ while [ $# -gt 0 ]; do
 		echo "Upload failed" >&2
 		errors=true
 		continue
-	elif [ $(echo $response | grep -c "<error_msg>") -gt 0 ]; then
+	elif echo "$response" | grep -q "<error msg>"; then
 		echo "Error message from imgur:" >&2
-		echo $response | sed -r 's/.*<error_msg>(.*)<\/error_msg>.*/\1/' >&2
+		msg="${response##*<error_msg>}"
+		echo "${msg%%</error_msg>*}" >&2
 		errors=true
 		continue
 	fi
 
 	# parse the response and output our stuff
-	url=$(echo $response | sed -r 's/.*<original_image>(.*)<\/original_image>.*/\1/')
-	deleteurl=$(echo $response | sed -r 's/.*<delete_page>(.*)<\/delete_page>.*/\1/')
+	url="${response##*<original_image>}"
+	url="${url%%</original_image>*}"
+	deleteurl="${response##*<delete_page>}"
+	deleteurl="${deleteurl%%</delete_page>*}"
 	echo $url
 	echo "Delete page: $deleteurl" >&2
 
 	# append the URL to a string so we can put them all on the clipboard later
-	clip="$clip$url
-"
+	clip+="$url"
+	if [ $# -gt 0 ]; then
+		clip+=$'\n'
+	fi
 done
 
 # put the URLs on the clipboard if we have xsel or xclip
 if [ $DISPLAY ]; then
-	{ type xsel >/dev/null 2>/dev/null && echo -n $clip | xsel; } \
-		|| { type xclip >/dev/null 2>/dev/null && echo -n $clip | xclip; } \
-		|| echo "Haven't copied to the clipboard: no xsel or xclip" >&2
+	if type xsel &>/dev/null; then
+		echo -n "$clip" | xsel
+	elif type xclip &>/dev/null; then
+		echo -n "$clip" | xclip
+	else
+		echo "Haven't copied to the clipboard: no xsel or xclip" >&2
+	fi
 else
 	echo "Haven't copied to the clipboard: no \$DISPLAY" >&2
 fi
