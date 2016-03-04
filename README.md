@@ -4,6 +4,9 @@ Bart's Imgur uploader bash script
 - By Bart Nagel <bart@tremby.net>
 - Improvements by Tino Sino <robottinosino@gmail.com>
 
+Purpose
+-------
+
 Upload images to [Imgur](http://imgur.com/) via a small bash script.
 
 History
@@ -30,16 +33,16 @@ Requirements
 Instructions
 ------------
 
-1. Put it somewhere in your path and maybe rename it:
+1. Put it somewhere in your path and maybe rename it
 
         mv imgur.sh ~/bin/imgur
 
-2. Make it executable:
+2. Make it executable
 
         chmod +x ~/bin/imgur
 
-3. Optional, since [Alan](http://imgur.com/user/Alan) at Imgur kindly provided
-   an API key for this script: stick your API key in the top:
+3. *Optional, since [Alan](http://imgur.com/user/Alan) at Imgur kindly provided
+   an API key for this script:* stick your API key in the top
 
         vim ~/bin/imgur
 
