@@ -4,6 +4,7 @@
 # improvements by Tino Sino <robottinosino@gmail.com>
 # version 6 or more
 # I release this into the public domain. Do with it what you will.
+# The latest version can be found at https://github.com/tremby/imgur.sh
 
 # Required: curl
 #
@@ -12,7 +13,7 @@
 #
 # Instructions:
 # Put it somewhere in your path and maybe rename it:
-# 	mv ~/Downloads/imgurbash.sh ~/bin/imgur
+# 	mv imgur.sh ~/bin/imgur
 # Make it executable:
 # 	chmod +x ~/bin/imgur
 # Optional, since Alan kindly provided an API key for this script: stick your
