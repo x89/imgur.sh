@@ -1,15 +1,15 @@
 #!/bin/bash
 
-# imgur script by Bart Nagel <bart@tremby.net>
-# improvements by Tino Sino <robottinosino@gmail.com>
-# version 6 or more
+# Imgur script by Bart Nagel <bart@tremby.net>
+# Improvements by Tino Sino <robottinosino@gmail.com>
+# Version 6 or more
 # I release this into the public domain. Do with it what you will.
 # The latest version can be found at https://github.com/tremby/imgur.sh
 
 # API Key provided by Alan@imgur.com
 apikey="b3625162d3418ac51a9ee805b1840452"
 
-# function to output usage instructions
+# Function to output usage instructions
 function usage {
 	echo "Usage: $(basename $0) <filename> [<filename> [...]]" >&2
 	echo "Upload images to imgur and output their new URLs to stdout. Each one's" >&2
@@ -18,13 +18,13 @@ function usage {
 	echo "easy pasting." >&2
 }
 
-# check API key has been entered
+# Check API key has been entered
 if [ -z "$apikey" ]; then
 	echo "You first need to edit the script and put your API key in the variable near the top." >&2
 	exit 15
 fi
 
-# check arguments
+# Check arguments
 if [ "$1" == "-h" -o "$1" == "--help" ]; then
 	usage
 	exit 0
@@ -34,7 +34,7 @@ elif [ $# -eq 0 ]; then
 	exit 16
 fi
 
-# check curl is available
+# Check curl is available
 type curl &>/dev/null || {
 	echo "Couldn't find curl, which is required." >&2
 	exit 17
@@ -43,22 +43,22 @@ type curl &>/dev/null || {
 clip=""
 errors=false
 
-# loop through arguments
+# Loop through arguments
 while [ $# -gt 0 ]; do
 	file="$1"
 	shift
 
-	# check file exists
+	# Check file exists
 	if [ ! -f "$file" ]; then
-		echo "file '$file' doesn't exist, skipping" >&2
+		echo "File '$file' doesn't exist, skipping" >&2
 		errors=true
 		continue
 	fi
 
-	# upload the image
+	# Upload the image
 	response=$(curl -vF "key=$apikey" -H "Expect: " -F "image=@$file" \
 		http://imgur.com/api/upload.xml 2>/dev/null)
-	# the "Expect: " header is to get around a problem when using this through
+	# The "Expect: " header is to get around a problem when using this through
 	# the Squid proxy. Not sure if it's a Squid bug or what.
 	if [ $? -ne 0 ]; then
 		echo "Upload failed" >&2
@@ -72,7 +72,7 @@ while [ $# -gt 0 ]; do
 		continue
 	fi
 
-	# parse the response and output our stuff
+	# Parse the response and output our stuff
 	url="${response##*<original_image>}"
 	url="${url%%</original_image>*}"
 	deleteurl="${response##*<delete_page>}"
@@ -80,14 +80,14 @@ while [ $# -gt 0 ]; do
 	echo $url
 	echo "Delete page: $deleteurl" >&2
 
-	# append the URL to a string so we can put them all on the clipboard later
+	# Append the URL to a string so we can put them all on the clipboard later
 	clip+="$url"
 	if [ $# -gt 0 ]; then
 		clip+=$'\n'
 	fi
 done
 
-# put the URLs on the clipboard if we have xsel or xclip
+# Put the URLs on the clipboard if we have xsel or xclip
 if [ $DISPLAY ]; then
 	if type xsel &>/dev/null; then
 		echo -n "$clip" | xsel
