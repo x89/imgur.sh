@@ -7,7 +7,7 @@
 
 # Required: curl
 #
-# Optional: xsel or xclip for automatically putting the URLs on the X selection
+# Optional: xsel, xclip, or pbcopy for automatically putting the URLs on the X selection
 # for easy pasting
 #
 # Instructions:
@@ -23,7 +23,7 @@
 # Upload multiple images:
 # 	imgur images/delicious/cake.png images/exciting/bungeejump.jpg
 # The URLs will be displayed (and the delete page's URLs will be displayed on
-# stderr). If you have xsel or xclip the URLs will also be put on the X
+# stderr). If you have xsel, xclip, or pbcopy, the URLs will also be put on the X
 # selection, which you can usually paste with a middle click.
 
 # API Key provided by Alan@imgur.com
@@ -34,7 +34,7 @@ function usage {
 	echo "Usage: $(basename $0) <filename> [<filename> [...]]" >&2
 	echo "Upload images to imgur and output their new URLs to stdout. Each one's" >&2
 	echo "delete page is output to stderr between the view URLs." >&2
-	echo "If xsel or xclip is available, the URLs are put on the X selection for" >&2
+	echo "If xsel, xclip, or pbcopy is available, the URLs are put on the X selection for" >&2
 	echo "easy pasting." >&2
 }
 
@@ -113,8 +113,10 @@ if [ $DISPLAY ]; then
 		echo -n "$clip" | xsel
 	elif type xclip &>/dev/null; then
 		echo -n "$clip" | xclip
+	elif type pbcopy &>/dev/null; then
+		echo -n "$clip" | pbcopy
 	else
-		echo "Haven't copied to the clipboard: no xsel or xclip" >&2
+		echo "Haven't copied to the clipboard: no xsel, xclip, or pbcopy" >&2
 	fi
 else
 	echo "Haven't copied to the clipboard: no \$DISPLAY" >&2
