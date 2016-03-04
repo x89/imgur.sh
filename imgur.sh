@@ -6,27 +6,6 @@
 # I release this into the public domain. Do with it what you will.
 # The latest version can be found at https://github.com/tremby/imgur.sh
 
-# Required: curl
-#
-# Optional: xsel, xclip, or pbcopy for automatically putting the URLs on the X selection
-# for easy pasting
-#
-# Instructions:
-# Put it somewhere in your path and maybe rename it:
-# 	mv imgur.sh ~/bin/imgur
-# Make it executable:
-# 	chmod +x ~/bin/imgur
-# Optional, since Alan kindly provided an API key for this script: stick your
-# API key in the top:
-# 	vim ~/bin/imgur
-# Upload an image:
-# 	imgur images/hilarious/manfallingover.jpg
-# Upload multiple images:
-# 	imgur images/delicious/cake.png images/exciting/bungeejump.jpg
-# The URLs will be displayed (and the delete page's URLs will be displayed on
-# stderr). If you have xsel, xclip, or pbcopy, the URLs will also be put on the X
-# selection, which you can usually paste with a middle click.
-
 # API Key provided by Alan@imgur.com
 apikey="b3625162d3418ac51a9ee805b1840452"
 
