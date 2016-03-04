@@ -2,7 +2,7 @@
 
 # imgur script by Bart Nagel <bart@tremby.net>
 # improvements by Tino Sino <robottinosino@gmail.com>
-# version 5
+# version 6 or more
 # I release this into the public domain. Do with it what you will.
 
 # Required: curl
