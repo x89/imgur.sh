@@ -64,7 +64,7 @@ while [ $# -gt 0 ]; do
 		echo "Upload failed" >&2
 		errors=true
 		continue
-	elif echo "$response" | grep -q "<error msg>"; then
+	elif echo "$response" | grep -q "<error_msg>"; then
 		echo "Error message from imgur:" >&2
 		msg="${response##*<error_msg>}"
 		echo "${msg%%</error_msg>*}" >&2
