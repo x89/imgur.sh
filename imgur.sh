@@ -50,7 +50,7 @@ while [ $# -gt 0 ]; do
 
 	# Check file exists
 	if [ ! -f "$file" ]; then
-		echo "File '$file' doesn't exist, skipping" >&2
+		echo "File '$file' doesn't exist; skipping" >&2
 		errors=true
 		continue
 	fi
