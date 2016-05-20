@@ -41,10 +41,10 @@ Instructions
 
         chmod +x ~/bin/imgur
 
-3. *Optional, since [Alan](http://imgur.com/user/Alan) at Imgur kindly provided
-   an API key for this script:* stick your API key in the top
-
-        vim ~/bin/imgur
+3. *Optional, since I've provided a client ID:*
+   add your [client id](https://imgur.com/account/settings/apps)
+   to the top of the script, replacing the provided one,
+   or set it as the `IMGUR_CLIENT_ID` environment variable
 
 ### Uploading images
 
@@ -59,3 +59,10 @@ Instructions
 The URLs will be displayed (and the delete page's URLs will be displayed on
 stderr). If you have `xsel`, `xclip`, or `pbcopy`, the URLs will also be put on
 the X selection, which you can then usually paste with a middle click.
+
+### Rate limits
+
+There are some [rate limits](https://api.imgur.com/#limits) with the API.
+The daily upload limit is shared by everyone using the same client ID,
+so if you're using the provided one and start to get errors,
+you might consider using your own client ID.
